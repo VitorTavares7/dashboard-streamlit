@@ -3,8 +3,9 @@ import pandas as pd
 import altair as alt
 import numpy as np
 
-# --- Configuração da Página e Tema ---
-st.set_page_config(layout="wide", page_title="Dashboard Instagram", page_icon='📊')
+# --- V V V CORREÇÃO DO ÍCONE DA PÁGINA V V V ---
+st.set_page_config(layout="wide", page_title="Dashboard Instagram", page_icon="📊")
+# --- ^ ^ ^ FIM DA CORREÇÃO ^ ^ ^ ---
 
 # Cores base (Python)
 COLOR_NAVY = "#0a192f"      # Azul Marinho Profissional
@@ -146,10 +147,8 @@ def main():
                     # 2. AGRUPAR POR MÊS (para o selectbox e visão geral)
                     df_mensal = df_ent_sai.set_index('data').resample('MS').sum(numeric_only=True).reset_index()
                     df_mensal = df_mensal.rename(columns={'data': 'mes_dt'})
-                    df_mensal['mes_str'] = df_mensal['mes_dt'].dt.strftime('%B de %Y').str.capitalize() # ex: 'Junho de 2024'
-
+                    df_mensal['mes_str'] = df_mensal['mes_dt'].dt.strftime('%B de %Y').str.capitalize() 
                     # 3. CRIAR O FILTRO (SELECTBOX)
-                    # Criar a lista de opções, começando com a visão geral
                     opcoes_mes = ['Visão Geral (Mensal)'] + df_mensal['mes_str'].tolist()
                     mes_selecionado = st.selectbox("Filtrar por mês:", opcoes_mes)
 
@@ -166,20 +165,14 @@ def main():
                     
                     else:
                         # PLOTAR O GRÁFICO DIÁRIO (FILTRADO)
-                        
-                        # Achar a data de início do mês selecionado
                         mes_dt_selecionado = df_mensal[df_mensal['mes_str'] == mes_selecionado]['mes_dt'].iloc[0]
-                        
-                        # Calcular o início e fim desse mês
                         inicio_mes = mes_dt_selecionado
                         fim_mes = inicio_mes + pd.offsets.MonthEnd(0)
                         
-                        # Filtrar o DataFrame DIÁRIO original
                         df_diario_filtrado = df_ent_sai[
                             (df_ent_sai['data'] >= inicio_mes) & (df_ent_sai['data'] <= fim_mes)
                         ]
                         
-                        # Criar o gráfico diário
                         chart1 = alt.Chart(df_diario_filtrado).mark_area(point=True, color=COLOR_NEUTRAL).encode(
                             x=alt.X('data:T', axis=alt.Axis(title='Dia', format='%Y-%m-%d')),
                             y=alt.Y('entrada_seguidor:Q', axis=alt.Axis(title='Novos Seguidores')),
@@ -196,6 +189,8 @@ def main():
 
     # --- Gráfico 2: Linha de interações (SEM DESTAQUES) ---
     with col2:
+        st.markdown("<div style='height: 79px;'>&nbsp;</div>", unsafe_allow_html=True)
+
         if df_total_int is None:
             st.error("Arquivo 'TotalInteracoes.csv' não encontrado. Gráfico 2 não pode ser gerado.")
         else:
