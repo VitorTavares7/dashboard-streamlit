@@ -19,10 +19,6 @@ COLOR_NEGATIVE = "#F08080"
 COLOR_NEUTRAL = "#ADD8E6"
 COLOR_PURPLE = "#8A2BE2"
 
-# --- BLOCO DE CSS REMOVIDO ---
-# O ficheiro config.toml cuida de tudo.
-
-
 # --- Tema Customizado do Altair (Corrigido) ---
 @alt.theme.register("custom_dark_theme", enable=True)
 def custom_dark_theme():
@@ -410,3 +406,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
